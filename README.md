@@ -2,7 +2,7 @@
 
 A top-down neo-noir action shooter that runs in any modern browser, on desktop and on phones.
 
-Ten floors across three acts, three bosses, explosive barrels, grenades and flashbangs, perks between floors, three-star ratings, and an endless survival mode. No install, no build step: it is one HTML file.
+A story told across four acts and fourteen floors. Five bosses with cinematic intros, alarm panels that call in reinforcements, enemies that talk and reload, a soundtrack that rises with the fight, grenades and flashbangs, perks, a shop with permanent upgrades, unlockable suits, achievements, a daily challenge with a new modifier every day, a boss rush, and an endless survival mode. No install, no build step: it is one HTML file.
 
 ## Play
 
@@ -25,7 +25,7 @@ On a phone, open that link, then use **Add to Home Screen** (Safari share menu o
 | Shift | Focus (hold) | Slow time |
 | G / F | Frag / Flash | Throw a grenade or flashbang where you aim |
 | R | Reload | Reload |
-| 1 2 3 / wheel | Swap | Pistol, shotgun, rifle |
+| 1 2 3 4 / wheel | Swap | Pistol, shotgun, rifle, SMG |
 | Esc | Pause | Pause |
 
 ## Publish it on GitHub Pages
@@ -44,4 +44,8 @@ To update the game later, upload the new `index.html` over the old one. If playe
 - `sw.js` – caches the game for fast loading and offline play
 - `icons/` – app icons
 
-Progress, stars, perks, settings and endless-mode records are saved in the player’s browser.
+Progress, stars, perks, settings, achievements and endless-mode records are saved in the player’s browser.
+
+## Performance
+
+Graphics quality adjusts itself automatically (Settings → Graphics: Auto, High, Medium, Low). Old bodies are painted into the floor, dropped items despawn and effects are capped, so long sessions stay smooth.

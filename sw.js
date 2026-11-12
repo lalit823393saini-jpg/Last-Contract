@@ -1,5 +1,5 @@
 // Last Contract service worker: caches the game so it loads fast and works offline.
-const CACHE = 'last-contract-v1';
+const CACHE = 'last-contract-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
