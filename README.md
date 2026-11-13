@@ -18,15 +18,17 @@ On a phone, open that link, then use **Add to Home Screen** (Safari share menu o
 
 | Desktop | Phone | Action |
 |---|---|---|
-| WASD | Left stick | Move |
-| Mouse + click | Right stick (push to the edge) | Aim and shoot |
+| WASD | Touch and drag anywhere on the left | Move |
+| Mouse + click | Drag the pink stick (tap it for a quick shot) | Aim and shoot |
 | Space | Roll | Combat roll, can’t be hit mid-roll |
 | E or right click | Strike | Melee; unaware, stunned or blinded enemies go down in one |
-| Shift | Focus (hold) | Slow time |
-| G / F | Frag / Flash | Throw a grenade or flashbang where you aim |
+| Shift | Focus (tap to toggle) | Slow time |
+| G / F | Frag / Flash (drag to aim, tap to auto-target) | Throw a grenade or flashbang |
 | R | Reload | Reload |
-| 1 2 3 4 / wheel | Swap | Pistol, shotgun, rifle, SMG |
+| 1 2 3 4 / wheel | Swap (shows gun and ammo) | Pistol, shotgun, rifle, SMG |
 | Esc | Pause | Pause |
+
+On phones you can change the touch button size and switch to a left-handed layout in Settings.
 
 ## Publish it on GitHub Pages
 
