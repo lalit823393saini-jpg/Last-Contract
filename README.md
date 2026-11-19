@@ -1,53 +1,42 @@
-# Last Contract
+# Last Contract: Ultimate Edition
 
-A top-down neo-noir action shooter that runs in any modern browser, on desktop and on phones.
+A modular browser-based neo-noir top-down action shooter. The original campaign remains in place and is extended from 14 to 24 floors across six acts. Existing campaign save data continues to use the original `lastContract.save.v2` key; the new XP and skill-tree data is stored separately.
 
-A story told across four acts and fourteen floors. Five bosses with cinematic intros, alarm panels that call in reinforcements, enemies that talk and reload, a soundtrack that rises with the fight, grenades and flashbangs, perks, a shop with permanent upgrades, unlockable suits, achievements, a daily challenge with a new modifier every day, a boss rush, and an endless survival mode. No install, no build step: it is one HTML file.
+## Run locally
 
-## Play
+Open `index.html` in a modern browser. For service-worker/offline testing, serve this folder over localhost (for example `python -m http.server 8080`) and open `http://localhost:8080`.
 
-Once GitHub Pages is on (see below), the game lives at:
+## GitHub Pages
 
-```
-https://YOUR-USERNAME.github.io/REPO-NAME/
-```
+Upload the complete folder contents to the repository root, then enable GitHub Pages from `main` / root. Do not upload only `index.html`: the game now loads CSS and JavaScript from the `css/` and `js/` folders. If you publish from a `/repository-name/` project URL, keep the folder structure and relative paths unchanged.
 
-On a phone, open that link, then use **Add to Home Screen** (Safari share menu on iPhone, or the browser menu on Android). It then opens fullscreen like an app and works offline.
+## Structure
 
-## Controls
-
-| Desktop | Phone | Action |
-|---|---|---|
-| WASD | Touch and drag anywhere on the left | Move |
-| Mouse + click | Drag the pink stick (tap it for a quick shot) | Aim and shoot |
-| Space | Roll | Combat roll, can’t be hit mid-roll |
-| E or right click | Strike | Melee; unaware, stunned or blinded enemies go down in one |
-| Shift | Focus (tap to toggle) | Slow time |
-| G / F | Frag / Flash (drag to aim, tap to auto-target) | Throw a grenade or flashbang |
-| R | Reload | Reload |
-| 1 2 3 4 / wheel | Swap (shows gun and ammo) | Pistol, shotgun, rifle, SMG |
-| Esc | Pause | Pause |
-
-On phones you can change the touch button size and switch to a left-handed layout in Settings.
-
-## Publish it on GitHub Pages
-
-1. Create a new **public** repository on github.com (for example `last-contract`).
-2. Click **Add file → Upload files** and drag in everything from this folder: `index.html`, `manifest.webmanifest`, `sw.js`, `README.md` and the `icons` folder. Commit.
-3. Go to **Settings → Pages**. Under **Build and deployment**, set **Source** to *Deploy from a branch*, choose the `main` branch and the `/ (root)` folder, then **Save**.
-4. Wait a minute or two. The page shows your live link at the top: `https://YOUR-USERNAME.github.io/last-contract/`.
-
-To update the game later, upload the new `index.html` over the old one. If players still see the old version, bump `CACHE` in `sw.js` (for example to `last-contract-v2`) in the same commit.
-
-## Files
-
-- `index.html` – the whole game (HTML, CSS and JavaScript in one file)
-- `manifest.webmanifest` – lets phones install it as an app
-- `sw.js` – caches the game for fast loading and offline play
+- `index.html` – application shell
+- `css/game.css` – original game styling
+- `js/game.js` – original game engine and campaign logic
+- `js/data/campaign-expansion.js` – five new floors in each of Acts V and VI, new themes and story beats
+- `js/features/progression.js` – XP, player levels, skill points and persistent skill tree
+- `manifest.webmanifest` – installable web-app metadata
+- `sw.js` – versioned offline cache
 - `icons/` – app icons
 
-Progress, stars, perks, settings, achievements and endless-mode records are saved in the player’s browser.
+## New content
 
-## Performance
+- Floors 15–24: Blacksite, The Interrogation, Cold Storage, The Reactor, Project Zero, Dead City, The Embassy, The Black Market, The Last Stand and Final Contract.
+- New bosses: The Warden, The Auditor and The Architect.
+- New Acts V and VI with story transitions.
+- Persistent XP and player levels; eliminations and cleared floors grant XP.
+- Spend skill points on Vitality (+10 max health/rank), Deadeye (+5% weapon damage/rank) and Scavenger (+10% cash/rank).
 
-Graphics quality adjusts itself automatically (Settings → Graphics: Auto, High, Medium, Low). Old bodies are painted into the floor, dropped items despawn and effects are capped, so long sessions stay smooth.
+## Existing systems retained
+
+The original 14 floors, difficulty settings, weapons, grenades, flashbangs, perks, permanent shop upgrades, suits, achievements, daily challenge, Boss Rush, Endless mode, touch controls, settings and local campaign save remain in the original game engine.
+
+## Save compatibility
+
+The existing campaign save key is unchanged. The new progression system uses `lastContract.progression.v1`, so adding it does not overwrite existing stars, unlocked floors, cash, purchases, suits or settings. Back up browser local storage before testing any major game update.
+
+## Validation and release smoke test
+
+The source is split into classic browser scripts to preserve the original engine's global event handlers. Static checks and campaign-map integrity checks are documented in `TEST-REPORT.md`. A full interactive browser run could not be completed in the build environment, so manually verify the deployed game before announcing it as fully tested: load the homepage, start a new campaign, clear a floor, continue to the next floor, open and spend a skill point, refresh to confirm save persistence, test touch controls on a phone, and reload once offline to check the service-worker cache.
