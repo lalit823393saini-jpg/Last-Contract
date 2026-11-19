@@ -2,9 +2,9 @@
 
 ## Passed
 
-- `node --check js/game.js`
-- `node --check js/data/campaign-expansion.js`
-- `node --check js/features/progression.js`
+- `node --check game.js`
+- `node --check campaign-expansion.js`
+- `node --check progression.js`
 - HTML has no duplicate IDs; all direct `$('id')` references in the game engine resolve to an element in the page.
 - All local stylesheet, script, manifest and icon references exist.
 - Expansion data loads: 2 added acts, 10 added floors and 5 added themes.

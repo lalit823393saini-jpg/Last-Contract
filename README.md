@@ -8,18 +8,18 @@ Open `index.html` in a modern browser. For service-worker/offline testing, serve
 
 ## GitHub Pages
 
-Upload the complete folder contents to the repository root, then enable GitHub Pages from `main` / root. Do not upload only `index.html`: the game now loads CSS and JavaScript from the `css/` and `js/` folders. If you publish from a `/repository-name/` project URL, keep the folder structure and relative paths unchanged.
+Upload the complete folder contents to the repository root, then enable GitHub Pages from `main` / root. This GitHub-ready package is intentionally flat to match a repository where files are uploaded directly into the root. Upload every file in this ZIP to the repository root and allow GitHub to replace files with the same names. If you publish from a `/repository-name/` project URL, keep all files together in the root.
 
 ## Structure
 
 - `index.html` – application shell
-- `css/game.css` – original game styling
-- `js/game.js` – original game engine and campaign logic
-- `js/data/campaign-expansion.js` – five new floors in each of Acts V and VI, new themes and story beats
-- `js/features/progression.js` – XP, player levels, skill points and persistent skill tree
+- `game.css` – original game styling
+- `game.js` – original game engine and campaign logic
+- `campaign-expansion.js` – five new floors in each of Acts V and VI, new themes and story beats
+- `progression.js` – XP, player levels, skill points and persistent skill tree
 - `manifest.webmanifest` – installable web-app metadata
 - `sw.js` – versioned offline cache
-- `icons/` – app icons
+- `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` – app icons
 
 ## New content
 

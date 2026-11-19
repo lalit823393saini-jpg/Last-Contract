@@ -1,9 +1,9 @@
 // Last Contract Ultimate Edition service worker.
-const CACHE = 'last-contract-ultimate-v1';
+const CACHE = 'last-contract-ultimate-v2';
 const SHELL = [
-  './', './index.html', './manifest.webmanifest', './css/game.css',
-  './js/data/campaign-expansion.js', './js/features/progression.js', './js/game.js',
-  './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'
+  './', './index.html', './manifest.webmanifest', './game.css',
+  './campaign-expansion.js', './progression.js', './game.js',
+  './icon-192.png', './icon-512.png', './apple-touch-icon.png'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
