@@ -1,42 +1,65 @@
-# Last Contract: Ultimate Edition
+# Last Contract v5 — Tactical Arsenal (Single-Folder Package)
 
-A modular browser-based neo-noir top-down action shooter. The original campaign remains in place and is extended from 14 to 24 floors across six acts. Existing campaign save data continues to use the original `lastContract.save.v2` key; the new XP and skill-tree data is stored separately.
+All project files are placed directly in this one folder. There are no nested asset or server folders.
 
-## Run locally
+## Run the browser game locally
 
-Open `index.html` in a modern browser. For service-worker/offline testing, serve this folder over localhost (for example `python -m http.server 8080`) and open `http://localhost:8080`.
+The game is a static browser client. From this folder, start a static server, for example:
+
+```bash
+python -m http.server 8080
+```
+
+Then open `http://localhost:8080`.
 
 ## GitHub Pages
 
-Upload the complete folder contents to the repository root, then enable GitHub Pages from `main` / root. This GitHub-ready package is intentionally flat to match a repository where files are uploaded directly into the root. Upload every file in this ZIP to the repository root and allow GitHub to replace files with the same names. If you publish from a `/repository-name/` project URL, keep all files together in the root.
+Upload the contents of this folder directly into the root of your GitHub repository. GitHub Pages hosts the static browser client. The Node.js multiplayer server files are included in this folder for convenience, but GitHub Pages does not execute them.
 
-## Structure
+## Multiplayer lobby backend (separate deployment)
 
-- `index.html` – application shell
-- `game.css` – original game styling
-- `game.js` – original game engine and campaign logic
-- `campaign-expansion.js` – five new floors in each of Acts V and VI, new themes and story beats
-- `progression.js` – XP, player levels, skill points and persistent skill tree
-- `manifest.webmanifest` – installable web-app metadata
-- `sw.js` – versioned offline cache
-- `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` – app icons
+This package includes `server.js`, `package.json`, `Dockerfile` and `.env.example` in the same folder as the game files.
 
-## New content
+Requirements: Node.js 20 or newer.
 
-- Floors 15–24: Blacksite, The Interrogation, Cold Storage, The Reactor, Project Zero, Dead City, The Embassy, The Black Market, The Last Stand and Final Contract.
-- New bosses: The Warden, The Auditor and The Architect.
-- New Acts V and VI with story transitions.
-- Persistent XP and player levels; eliminations and cleared floors grant XP.
-- Spend skill points on Vitality (+10 max health/rank), Deadeye (+5% weapon damage/rank) and Scavenger (+10% cash/rank).
+```bash
+npm install
+```
 
-## Existing systems retained
+Copy `.env.example` to `.env`, then set `ALLOWED_ORIGINS` to the exact origin of your deployed GitHub Pages site (for example `https://OWNER.github.io`). Do not leave the example value unchanged.
 
-The original 14 floors, difficulty settings, weapons, grenades, flashbangs, perks, permanent shop upgrades, suits, achievements, daily challenge, Boss Rush, Endless mode, touch controls, settings and local campaign save remain in the original game engine.
+Start the backend:
 
-## Save compatibility
+```bash
+npm start
+```
 
-The existing campaign save key is unchanged. The new progression system uses `lastContract.progression.v1`, so adding it does not overwrite existing stars, unlocked floors, cash, purchases, suits or settings. Back up browser local storage before testing any major game update.
+Health endpoint: `/health`. Deploy the backend to a Node.js host that supports persistent WebSocket connections and TLS/WSS. Configure the game's multiplayer server URL to the deployed `wss://` endpoint.
 
-## Validation and release smoke test
+## Important multiplayer limitation
 
-The source is split into classic browser scripts to preserve the original engine's global event handlers. Static checks and campaign-map integrity checks are documented in `TEST-REPORT.md`. A full interactive browser run could not be completed in the build environment, so manually verify the deployed game before announcing it as fully tested: load the homepage, start a new campaign, clear a floor, continue to the next floor, open and spend a skill point, refresh to confirm save persistence, test touch controls on a phone, and reload once offline to check the service-worker cache.
+The included backend is a lobby/room-management alpha. It supports Co-op and PvP room types, room codes, readiness, host-only match start and heartbeat. It does NOT yet synchronize real-time player movement, aiming, shooting, enemy AI, damage, projectiles, mission state or match results. Co-op/PvP combat is therefore not yet playable online. Rooms are in-memory and are lost when the server restarts.
+
+## Existing game and saves
+
+The original campaign and local save keys are retained. New weapon and multiplayer files are part of this package. Browser saves remain on each player's device; this package does not provide cloud saves.
+
+## Weapon notes
+
+The expanded arsenal uses the existing combat pipeline. Burst Rifle is not yet a true three-round burst implementation. Flamethrower does not yet apply persistent burn damage. Weapon values require playtesting for balance.
+
+## Files
+
+- `index.html` — game page
+- `game.css` — styling
+- `game.js` — game engine
+- `campaign-expansion.js` — campaign expansion
+- `progression.js` — player progression
+- `multiplayer-client.js` — multiplayer lobby client
+- `server.js` — Node.js WebSocket lobby backend
+- `package.json` — backend dependencies and scripts
+- `Dockerfile` — backend container build
+- `.env.example` — backend configuration example
+- `manifest.webmanifest`, `sw.js`, icons — PWA assets
+- `TEST-REPORT.md` — package checks and known limitations
+- `SERVER-README.md` — backend protocol and deployment notes

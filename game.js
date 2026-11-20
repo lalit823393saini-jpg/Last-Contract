@@ -327,9 +327,26 @@ const WEAPONS = {
   pistol: {name:'Pistol',  cap:12, maxRes:96, rate:0.15, reload:1.0,  dmg:2,   pellets:1, spread:0.022, speed:1750, life:0.55, shake:3,  noise:520, snd:'pistol'},
   shotgun:{name:'Shotgun', cap:6,  maxRes:30, rate:0.6,  reload:1.45, dmg:1.6, pellets:7, spread:0.19,  speed:1500, life:0.26, shake:9,  noise:650, snd:'shotgun'},
   smg:    {name:'SMG',     cap:24, maxRes:120,rate:0.075,reload:1.3, dmg:1.3, pellets:1, spread:0.07,  speed:1650, life:0.45, shake:2.2,noise:560, snd:'smg'},
-  rifle:  {name:'Rifle',   cap:5,  maxRes:20, rate:0.85, reload:1.7,  dmg:7,   pellets:1, spread:0.004, speed:2600, life:0.6,  shake:11, noise:800, snd:'rifle', pierce:true}
+  rifle:  {name:'Rifle',   cap:5,  maxRes:20, rate:0.85, reload:1.7,  dmg:7,   pellets:1, spread:0.004, speed:2600, life:0.6,  shake:11, noise:800, snd:'rifle', pierce:true},
+  heavyPistol:{name:'Heavy Pistol',cap:9,maxRes:72,rate:0.24,reload:1.15,dmg:3.8,pellets:1,spread:0.018,speed:1900,life:0.58,shake:5,noise:620,snd:'pistol'},
+  revolver:{name:'Revolver',cap:6,maxRes:48,rate:0.42,reload:1.55,dmg:6.2,pellets:1,spread:0.009,speed:2300,life:0.62,shake:8,noise:720,snd:'rifle',pierce:true},
+  machinePistol:{name:'Machine Pistol',cap:20,maxRes:120,rate:0.065,reload:1.35,dmg:1.1,pellets:1,spread:0.09,speed:1600,life:0.42,shake:2.5,noise:540,snd:'smg'},
+  compactSMG:{name:'Compact SMG',cap:30,maxRes:150,rate:0.07,reload:1.4,dmg:1.15,pellets:1,spread:0.075,speed:1650,life:0.44,shake:2.6,noise:560,snd:'smg'},
+  tacticalSMG:{name:'Tactical SMG',cap:25,maxRes:150,rate:0.085,reload:1.25,dmg:1.55,pellets:1,spread:0.045,speed:1750,life:0.48,shake:3,noise:580,snd:'smg'},
+  burstRifle:{name:'Burst Rifle',cap:24,maxRes:144,rate:0.16,reload:1.6,dmg:2.1,pellets:1,spread:0.025,speed:2050,life:0.52,shake:4,noise:650,snd:'rifle'},
+  battleRifle:{name:'Battle Rifle',cap:20,maxRes:120,rate:0.22,reload:1.65,dmg:3.2,pellets:1,spread:0.012,speed:2250,life:0.58,shake:5.5,noise:700,snd:'rifle',pierce:true},
+  dmr:{name:'DMR',cap:12,maxRes:72,rate:0.32,reload:1.7,dmg:5.2,pellets:1,spread:0.006,speed:2450,life:0.62,shake:7,noise:760,snd:'rifle',pierce:true},
+  pumpShotgun:{name:'Pump Shotgun',cap:8,maxRes:40,rate:0.72,reload:1.65,dmg:1.55,pellets:9,spread:0.2,speed:1450,life:0.25,shake:10,noise:720,snd:'shotgun'},
+  autoShotgun:{name:'Auto Shotgun',cap:10,maxRes:50,rate:0.42,reload:1.9,dmg:1.15,pellets:8,spread:0.23,speed:1400,life:0.23,shake:9,noise:740,snd:'shotgun'},
+  boltSniper:{name:'Bolt Sniper',cap:5,maxRes:25,rate:1.05,reload:1.85,dmg:9,pellets:1,spread:0.0015,speed:3000,life:0.7,shake:13,noise:900,snd:'rifle',pierce:true},
+  semiSniper:{name:'Semi-auto Sniper',cap:10,maxRes:50,rate:0.48,reload:1.8,dmg:6.2,pellets:1,spread:0.003,speed:2800,life:0.66,shake:9,noise:850,snd:'rifle',pierce:true},
+  lmg:{name:'LMG',cap:75,maxRes:300,rate:0.095,reload:3.1,dmg:1.45,pellets:1,spread:0.085,speed:1750,life:0.48,shake:4,noise:820,snd:'smg'},
+  flamethrower:{name:'Flamethrower',cap:40,maxRes:160,rate:0.055,reload:2.1,dmg:0.65,pellets:3,spread:0.28,speed:850,life:0.16,shake:1.5,noise:500,snd:'shotgun'},
+  crossbow:{name:'Crossbow',cap:1,maxRes:18,rate:0.9,reload:1.35,dmg:10,pellets:1,spread:0.002,speed:2100,life:0.75,shake:6,noise:180,snd:'rifle',pierce:true}
 };
-const WORDER=['pistol','shotgun','rifle','smg'];
+const WORDER=['pistol','shotgun','rifle','smg','heavyPistol','revolver','machinePistol','compactSMG','tacticalSMG','burstRifle','battleRifle','dmr','pumpShotgun','autoShotgun','boltSniper','semiSniper','lmg','flamethrower','crossbow'];
+const EXTRA_GUNS=WORDER.filter(w=>!['pistol','shotgun','rifle','smg'].includes(w));
+function fullWeaponLoadout(){ const guns={pistol:{mag:12,res:48},shotgun:null,rifle:null,smg:null}; for(const w of EXTRA_GUNS) guns[w]={mag:WEAPONS[w].cap,res:Math.min(WEAPONS[w].maxRes,WEAPONS[w].cap*3)}; return guns; }
 const ETYPES = {
   grunt: {hp:4, speed:110, r:13, range:520, rate:[0.5,0.85], weapon:'pistol', dmg:11, err:0.11, vision:480, score:100, mag:8,
           pal:{coat:'#5b1b31', coat2:'#43121f', detail:'#d9d2c2', hair:'#2a1f18', skin:'#b5835f'}},
@@ -711,7 +728,7 @@ function capOf(w){ const b=WEAPONS[w].cap+({pistol:2,shotgun:1,rifle:1,smg:6}[w]
 function maxHp(){ return (has('iron')?130:100) + (window.LCProgression?.healthBonus?.()||0); }
 function perksBefore(n){ const out=[]; for(let j=0;j<n;j++){ const p=save.perksAfter[j]; if(p&&!out.includes(p)) out.push(p); } return out; }
 function freshLoadout(n){
-  const p={hp:100,armor:25,focus:0.6,weapon:'pistol',guns:{pistol:{mag:12,res:48},shotgun:null,rifle:null,smg:null},perks:perksBefore(n),frags:2,flashes:2};
+  const p={hp:100,armor:25,focus:0.6,weapon:'pistol',guns:fullWeaponLoadout(),perks:perksBefore(n),frags:2,flashes:2};
   if(n>=1) p.guns.shotgun={mag:6,res:12};
   if(n>=6) p.guns.rifle={mag:5,res:5};
   if(n>=4) p.guns.smg={mag:24,res:48};
@@ -774,12 +791,14 @@ function loadLevel(i, loadout){
   P=makePlayer(start.x,start.y);
   const L=loadout||freshLoadout(i);
   P.perks=L.perks.slice(); P.hp=Math.min(maxHp(),L.hp+(!loadout?(window.LCProgression?.healthBonus?.()||0):0)); P.armor=L.armor; P.focus=L.focus; P.weapon=L.weapon;
-  P.guns=JSON.parse(JSON.stringify(L.guns));
+  P.guns=JSON.parse(JSON.stringify(L.guns||{}));
+  // Backward-compatible save migration: preserve owned legacy guns and add the new armory safely.
+  for(const w of EXTRA_GUNS) if(!P.guns[w]) P.guns[w]={mag:WEAPONS[w].cap,res:Math.min(WEAPONS[w].maxRes,WEAPONS[w].cap*2)};
   if(has('kevlar')) P.armor=Math.max(P.armor,60);
   const gn=upg('gear','nades'); P.frags=Math.max(2+gn,L.frags||0); P.flashes=Math.max(2+gn,L.flashes||0);
   const ga=upg('gear','armor'); if(ga) P.armor=Math.max(P.armor,Math.min(100,25+15*ga));
   if(MOD==='oneshot') P.armor=0;
-  if(MOD==='pistol'){ P.guns.shotgun=null; P.guns.rifle=null; P.guns.smg=null; P.weapon='pistol'; }
+  if(MOD==='pistol'){ for(const w of WORDER) if(w!=='pistol') P.guns[w]=null; P.weapon='pistol'; }
   if(!P.guns[P.weapon]) P.weapon='pistol';
   levelStartSnapshot={hp:P.hp,armor:P.armor,focus:P.focus,weapon:P.weapon,guns:JSON.parse(JSON.stringify(P.guns)),perks:P.perks.slice(),frags:P.frags,flashes:P.flashes,score};
   stats={kills:0,takedowns:0,shots:0,hits:0,dmgTaken:0};
@@ -789,7 +808,7 @@ function loadLevel(i, loadout){
 }
 function makePlayer(x,y){
   return {x,y,r:13,ang:0,vx:0,vy:0,hp:100,armor:25,alive:true,step:0,recoil:0,hurtT:0,perks:[],swUsed:false,
-    weapon:'pistol', guns:{pistol:{mag:12,res:48},shotgun:null,rifle:null},
+    weapon:'pistol', guns:fullWeaponLoadout(),
     fireCD:0,reloadT:0,rollT:0,rollCD:0,rollDir:0,rollSpin:0,strikeCD:0,focus:0.6,triggerHeld:false,frags:2,flashes:2,throwCD:0,blindT:0,lastStand:false};
 }
 function makeEnemy(type,x,y,diff){
@@ -911,6 +930,39 @@ function drawFloor(c,f,x,y,tx,ty,R){
 const keys={}; const mouse={x:0,y:0,down:false};
 let inputMode='mouse';
 const touch={mx:0,my:0,ax:0,ay:0,aim:false,fire:false,focus:false,tapT:0,throwAim:null};
+
+/* ----- Optional standard Gamepad API support ----- */
+let activeGamepadIndex=null, gamepadPrev=[];
+function pollGamepad(){
+  if(!navigator.getGamepads) return;
+  let pads=[]; try{ pads=navigator.getGamepads(); }catch(_){ return; }
+  let pad=activeGamepadIndex!=null?pads[activeGamepadIndex]:null;
+  if(!pad||!pad.connected){ pad=Array.from(pads).find(g=>g&&g.connected); activeGamepadIndex=pad?pad.index:null; gamepadPrev=[]; }
+  if(!pad){
+    if(inputMode==='gamepad'){ touch.mx=touch.my=touch.ax=touch.ay=0; touch.aim=touch.fire=touch.focus=false; inputMode=isTouch?'touch':'mouse'; }
+    return;
+  }
+  const pressed=i=>!!pad.buttons[i]?.pressed;
+  const edge=i=>{ const now=pressed(i), was=!!gamepadPrev[i]; gamepadPrev[i]=now; return now&&!was; };
+  const axis=(i)=>Number.isFinite(pad.axes[i])?pad.axes[i]:0;
+  let mx=axis(0), my=axis(1), ml=Math.hypot(mx,my);
+  if(ml<0.18) mx=my=0; else if(ml>1){mx/=ml;my/=ml;}
+  let ax=axis(2), ay=axis(3), al=Math.hypot(ax,ay);
+  if(al<0.2){ax=ay=0;al=0;} else {ax/=al;ay/=al;}
+  inputMode='gamepad'; touch.mx=mx; touch.my=my; touch.ax=ax; touch.ay=ay;
+  touch.aim=al>0; touch.fire=pressed(7)||Number(pad.buttons[7]?.value||0)>0.35; touch.focus=pressed(4);
+  if(state==='play'){
+    if(edge(0)) tryRoll();       // A / Cross
+    if(edge(1)) tryStrike();     // B / Circle
+    if(edge(2)) startReload();   // X / Square
+    if(edge(3)) cycleWeapon(1);  // Y / Triangle
+    if(edge(5)) throwNade('frag');
+    if(edge(6)) throwNade('flash');
+    if(edge(9)) setPause(true);  // Start / Options
+  } else if(state==='pause'&&edge(9)) setPause(false);
+}
+window.addEventListener('gamepadconnected',e=>{activeGamepadIndex=e.gamepad.index;gamepadPrev=[];showMsg('Controller connected',1.5);});
+window.addEventListener('gamepaddisconnected',e=>{if(activeGamepadIndex===e.gamepad.index){activeGamepadIndex=null;gamepadPrev=[];touch.mx=touch.my=touch.ax=touch.ay=0;touch.aim=touch.fire=touch.focus=false;inputMode=isTouch?'touch':'mouse';showMsg('Controller disconnected',1.5);}});
 window.addEventListener('keydown',e=>{
   if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)&&state==='play') e.preventDefault();
   if(keys[e.code]) return; keys[e.code]=true; if(state==='play') inputMode='mouse';
@@ -920,10 +972,8 @@ window.addEventListener('keydown',e=>{
     if(e.code==='KeyE') tryStrike();
     if(e.code==='KeyG') throwNade('frag');
     if(e.code==='KeyF') throwNade('flash');
-    if(e.code==='Digit1') switchWeapon('pistol');
-    if(e.code==='Digit2') switchWeapon('shotgun');
-    if(e.code==='Digit3') switchWeapon('rifle');
-    if(e.code==='Digit4') switchWeapon('smg');
+    // Number keys select the corresponding weapon in the shared 1–19 arsenal order.
+    if(/^Digit[1-9]$/.test(e.code)){ const slot=Number(e.code.slice(5))-1; const weapon=WORDER.filter(w=>P.guns[w])[slot]; if(weapon) switchWeapon(weapon); }
     if(e.code==='Escape'||e.code==='KeyP') setPause(true);
   } else if(state==='pause'&&(e.code==='Escape'||e.code==='KeyP')) setPause(false);
 });
@@ -1637,7 +1687,7 @@ function update(wdt,pdt,rdt){
   }
   if(P.alive){
     const mv=moveInput();
-    if(inputMode==='touch'){
+    if(inputMode==='touch'||inputMode==='gamepad'){
       if(touch.tapT>0){ touch.tapT-=rdt; const tg=nearestTarget(650); if(tg) P.ang=Math.atan2(tg.y-P.y,tg.x-P.x); }
       else if(touch.aim) P.ang=assistAim(Math.atan2(touch.ay,touch.ax));
       else if(mv.x||mv.y) P.ang+=angDiff(P.ang,Math.atan2(mv.y,mv.x))*Math.min(1,pdt*8);
@@ -1648,7 +1698,7 @@ function update(wdt,pdt,rdt){
     if(P.rollT>0){ P.rollT-=pdt; P.rollSpin+=pdt*22; const s=(has('ghost')?520:470)*(0.6+P.rollT/(P.rollMax||0.36)*0.6); P.vx=Math.cos(P.rollDir)*s; P.vy=Math.sin(P.rollDir)*s; }
     else { const sp=P.reloadT>0?180:215; const k=Math.min(1,pdt*14); P.vx+=(mv.x*sp-P.vx)*k; P.vy+=(mv.y*sp-P.vy)*k; }
     const ox=P.x, oy=P.y; moveEnt(P,P.vx*pdt,P.vy*pdt); P.step+=Math.hypot(P.x-ox,P.y-oy)*0.085;
-    const wantFire=(inputMode==='touch'?(touch.fire||touch.tapT>0):mouse.down);
+    const wantFire=((inputMode==='touch'||inputMode==='gamepad')?(touch.fire||touch.tapT>0):mouse.down);
     if(wantFire) tryFire(); P.triggerHeld=wantFire;
     const scav=has('scavenger')?1.5:1;
     for(let i=pickups.length-1;i>=0;i--){
@@ -1657,11 +1707,11 @@ function update(wdt,pdt,rdt){
       if(Math.hypot(k.x-P.x,k.y-P.y)>P.r+14) continue;
       let took=false, msg='';
       const addRes=(w,amt,label)=>{ const g=P.guns[w]; if(g&&g.res<WEAPONS[w].maxRes){ g.res=Math.min(WEAPONS[w].maxRes,g.res+amt); took=true; msg='+'+amt+' '+label; } };
-      if(k.type==='ammo'){ addRes('pistol',k.amt,'rounds'); if(P.guns.smg&&P.guns.smg.res<WEAPONS.smg.maxRes){ P.guns.smg.res=Math.min(WEAPONS.smg.maxRes,P.guns.smg.res+k.amt); took=true; msg='+'+k.amt+' 9mm'; } }
-      else if(k.type==='shells') addRes('shotgun',k.amt,'shells');
-      else if(k.type==='rounds') addRes('rifle',k.amt,'rifle rounds');
+      if(k.type==='ammo'){ for(const w of WORDER){ if(!P.guns[w]) continue; const refill=Math.max(2,Math.round(k.amt*(w==='lmg'?1.5:1))); const before=P.guns[w].res; P.guns[w].res=Math.min(WEAPONS[w].maxRes,before+refill); if(P.guns[w].res>before){took=true;msg='Ammo resupplied';} } }
+      else if(k.type==='shells'){ for(const w of ['shotgun','pumpShotgun','autoShotgun']) addRes(w,k.amt,'shells'); }
+      else if(k.type==='rounds'){ for(const w of ['rifle','burstRifle','battleRifle','dmr','boltSniper','semiSniper','crossbow']) addRes(w,k.amt,'rounds'); }
       else if(MOD==='pistol'&&WEAPONS[k.type]){ addRes('pistol',12,'rounds'); }
-      else if(k.type==='shotgun'||k.type==='rifle'||k.type==='smg'){ const w=k.type; if(!P.guns[w]) P.guns[w]={mag:capOf(w),res:w==='rifle'?5:w==='smg'?24:12}; else P.guns[w].res=Math.min(WEAPONS[w].maxRes,P.guns[w].res+(w==='rifle'?4:w==='smg'?20:8)); took=true; msg=WEAPONS[w].name+'. Press '+(WORDER.indexOf(w)+1); if(w==='smg') unlock('smg'); }
+      else if(WORDER.includes(k.type)&&WEAPONS[k.type]){ const w=k.type; if(!P.guns[w]) P.guns[w]={mag:capOf(w),res:Math.min(WEAPONS[w].maxRes,WEAPONS[w].cap*2)}; else P.guns[w].res=Math.min(WEAPONS[w].maxRes,P.guns[w].res+Math.max(WEAPONS[w].cap,6)); took=true; msg=WEAPONS[w].name+'. Use weapon cycle to equip'; if(w==='smg') unlock('smg'); }
       else if(k.type==='med'){ if(P.hp<maxHp()){ const hv=45+15*upg('gear','med'); P.hp=Math.min(maxHp(),P.hp+hv); took=true; msg='+'+hv+' health'; } }
       else if(k.type==='nade'){ if(P.frags<4||P.flashes<4){ P.frags=Math.min(4,P.frags+1); P.flashes=Math.min(4,P.flashes+1); took=true; msg='+1 frag, +1 flash'; } }
       else if(k.type==='vest'){ if(P.armor<100){ P.armor=Math.min(100,P.armor+60); took=true; msg='+60 armor'; } }
@@ -2524,6 +2574,7 @@ function step(now){
   const raw=now-last;
   const rdt=Math.min(0.033,Math.max(0,raw/1000)); last=now;
   autoQuality(raw);
+  pollGamepad();
   if(state==='play'&&LV){
     const want=(keys.ShiftLeft||keys.ShiftRight||keys.KeyQ||touch.focus)&&P.alive&&P.focus>0.01;
     if(want&&ts>0.95) sfx('focus');
